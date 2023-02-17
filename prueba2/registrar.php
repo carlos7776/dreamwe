@@ -80,6 +80,7 @@ $totalRows_resgistros = mysql_num_rows($resgistros);
 </head>
 
 <body>
+<h1 align="center">Tabla de registro</h1>
 <form method="post" name="form1" action="<?php echo $editFormAction; ?>">
   <table align="center">
     <tr valign="baseline">

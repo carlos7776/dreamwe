@@ -57,11 +57,38 @@ $totalPages_lisper = ceil($totalRows_lisper/$maxRows_lisper)-1;
 <head>
 <meta charset="utf-8">
 <title>Documento sin título</title>
+<style>
+ h1{
+            text-align: center;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            margin-bottom: 50px;
+        }
+        .resg{
+            text-align: center;
+            display: grid;      
+			margin-bottom:200px:
+	    }
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+		th, td {
+			padding: 8px;
+			text-align: left;
+			border: 1px solid #ddd;
+		}
+		th {
+			background-color: #f2f2f2;
+			color: #333;
+			font-weight: bold;}
+
+
+</style>
 </head>
 
 <body>
 <h1>Tabla persona</h1>
-<a href="registrar.php">registro</a> <br><br>
+<a href="registrar.php" class="resg">registro</a> <br><br>
 <table border="1">
   <tr>
     <td>cedula</td>
