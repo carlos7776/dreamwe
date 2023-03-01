@@ -32,7 +32,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 
 if ((isset($_GET['cedula'])) && ($_GET['cedula'] != "")) {
-  $deleteSQL = sprintf("DELETE FROM persona WHERE cedula=%s",
+  $deleteSQL = sprintf("DELETE FROM persona1 WHERE cedula=%s",
                        GetSQLValueString($_GET['cedula'], "int"));
 
   mysql_select_db($database_carlos, $carlos);

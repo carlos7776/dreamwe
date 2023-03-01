@@ -36,12 +36,14 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE persona1 SET fecha=%s, asunto=%s, primer_nombre=%s, segundo_nombre=%s, primer_apellido=%s, segundo_apellido=%s, fijo=%s, celular=%s, direccion=%s, barrio=%s, descripcion=%s WHERE cedula=%s",
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $insertSQL = sprintf("INSERT INTO persona1 (cedula, fecha, asunto, primer_nombre, segundo_nombre, genero, primer_apellido, segundo_apellido, fijo, celular, direccion, barrio, descripcion, pais, estado, ciudad) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                       GetSQLValueString($_POST['cedula'], "int"),
                        GetSQLValueString($_POST['fecha'], "date"),
                        GetSQLValueString($_POST['asunto'], "text"),
                        GetSQLValueString($_POST['primer_nombre'], "text"),
                        GetSQLValueString($_POST['segundo_nombre'], "text"),
+                       GetSQLValueString($_POST['genero'], "text"),
                        GetSQLValueString($_POST['primer_apellido'], "text"),
                        GetSQLValueString($_POST['segundo_apellido'], "text"),
                        GetSQLValueString($_POST['fijo'], "int"),
@@ -49,28 +51,20 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
                        GetSQLValueString($_POST['direccion'], "text"),
                        GetSQLValueString($_POST['barrio'], "text"),
                        GetSQLValueString($_POST['descripcion'], "text"),
-                       GetSQLValueString($_POST['cedula'], "int"));
+                       GetSQLValueString($_POST['pais'], "text"),
+                       GetSQLValueString($_POST['estado'], "text"),
+                       GetSQLValueString($_POST['ciudad'], "text"));
 
   mysql_select_db($database_carlos, $carlos);
-  $Result1 = mysql_query($updateSQL, $carlos) or die(mysql_error());
+  $Result1 = mysql_query($insertSQL, $carlos) or die(mysql_error());
 
-  $updateGoTo = "menu.php";
+  $insertGoTo = "persona.php";
   if (isset($_SERVER['QUERY_STRING'])) {
-    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
-    $updateGoTo .= $_SERVER['QUERY_STRING'];
+    $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
+    $insertGoTo .= $_SERVER['QUERY_STRING'];
   }
-  header(sprintf("Location: %s", $updateGoTo));
+  header(sprintf("Location: %s", $insertGoTo));
 }
-
-$colname_actualizar = "-1";
-if (isset($_GET['cedula'])) {
-  $colname_actualizar = $_GET['cedula'];
-}
-mysql_select_db($database_carlos, $carlos);
-$query_actualizar = sprintf("SELECT * FROM persona1 WHERE cedula = %s", GetSQLValueString($colname_actualizar, "int"));
-$actualizar = mysql_query($query_actualizar, $carlos) or die(mysql_error());
-$row_actualizar = mysql_fetch_assoc($actualizar);
-$totalRows_actualizar = mysql_num_rows($actualizar);
 ?>
 <!doctype html>
 <html>
@@ -80,68 +74,79 @@ $totalRows_actualizar = mysql_num_rows($actualizar);
 </head>
 
 <body>
-<h1  align="center">tabla de actualizacion</h1>
 <form method="post" name="form1" action="<?php echo $editFormAction; ?>">
   <table align="center">
     <tr valign="baseline">
       <td nowrap align="right">Cedula:</td>
-      <td><?php echo $row_actualizar['cedula']; ?></td>
+      <td><input type="text" name="cedula" value="" size="32"></td>
     </tr>
     <tr valign="baseline">
       <td nowrap align="right">Fecha:</td>
-      <td><input type="date" name="fecha" value="<?php echo htmlentities($row_actualizar['fecha'], ENT_COMPAT, 'utf-8'); ?>" size="32"></td>
+      <td><input type="text" name="fecha" value="" size="32"></td>
     </tr>
     <tr valign="baseline">
       <td nowrap align="right">Asunto:</td>
-      <td><input type="text" name="asunto" value="<?php echo htmlentities($row_actualizar['asunto'], ENT_COMPAT, 'utf-8'); ?>" size="32"></td>
+      <td><input type="text" name="asunto" value="" size="32"></td>
     </tr>
     <tr valign="baseline">
       <td nowrap align="right">Primer_nombre:</td>
-      <td><input type="text" name="primer_nombre" value="<?php echo htmlentities($row_actualizar['primer_nombre'], ENT_COMPAT, 'utf-8'); ?>" size="32"></td>
+      <td><input type="text" name="primer_nombre" value="" size="32"></td>
     </tr>
     <tr valign="baseline">
       <td nowrap align="right">Segundo_nombre:</td>
-      <td><input type="text" name="segundo_nombre" value="<?php echo htmlentities($row_actualizar['segundo_nombre'], ENT_COMPAT, 'utf-8'); ?>" size="32"></td>
+      <td><input type="text" name="segundo_nombre" value="" size="32"></td>
+    </tr>
+    <tr valign="baseline">
+      <td nowrap align="right">Genero:</td>
+      <td><input type="text" name="genero" value="" size="32"></td>
     </tr>
     <tr valign="baseline">
       <td nowrap align="right">Primer_apellido:</td>
-      <td><input type="text" name="primer_apellido" value="<?php echo htmlentities($row_actualizar['primer_apellido'], ENT_COMPAT, 'utf-8'); ?>" size="32"></td>
+      <td><input type="text" name="primer_apellido" value="" size="32"></td>
     </tr>
     <tr valign="baseline">
       <td nowrap align="right">Segundo_apellido:</td>
-      <td><input type="text" name="segundo_apellido" value="<?php echo htmlentities($row_actualizar['segundo_apellido'], ENT_COMPAT, 'utf-8'); ?>" size="32"></td>
+      <td><input type="text" name="segundo_apellido" value="" size="32"></td>
     </tr>
     <tr valign="baseline">
       <td nowrap align="right">Fijo:</td>
-      <td><input type="text" name="fijo" value="<?php echo htmlentities($row_actualizar['fijo'], ENT_COMPAT, 'utf-8'); ?>" size="32"></td>
+      <td><input type="text" name="fijo" value="" size="32"></td>
     </tr>
     <tr valign="baseline">
       <td nowrap align="right">Celular:</td>
-      <td><input type="text" name="celular" value="<?php echo htmlentities($row_actualizar['celular'], ENT_COMPAT, 'utf-8'); ?>" size="32"></td>
+      <td><input type="text" name="celular" value="" size="32"></td>
     </tr>
     <tr valign="baseline">
       <td nowrap align="right">Direccion:</td>
-      <td><input type="text" name="direccion" value="<?php echo htmlentities($row_actualizar['direccion'], ENT_COMPAT, 'utf-8'); ?>" size="32"></td>
+      <td><input type="text" name="direccion" value="" size="32"></td>
     </tr>
     <tr valign="baseline">
       <td nowrap align="right">Barrio:</td>
-      <td><input type="text" name="barrio" value="<?php echo htmlentities($row_actualizar['barrio'], ENT_COMPAT, 'utf-8'); ?>" size="32"></td>
+      <td><input type="text" name="barrio" value="" size="32"></td>
     </tr>
     <tr valign="baseline">
       <td nowrap align="right">Descripcion:</td>
-      <td><input type="text" name="descripcion" value="<?php echo htmlentities($row_actualizar['descripcion'], ENT_COMPAT, 'utf-8'); ?>" size="32"></td>
+      <td><input type="text" name="descripcion" value="" size="32"></td>
+    </tr>
+    <tr valign="baseline">
+      <td nowrap align="right">Pais:</td>
+      <td><input type="text" name="pais" value="" size="32"></td>
+    </tr>
+    <tr valign="baseline">
+      <td nowrap align="right">Estado:</td>
+      <td><input type="text" name="estado" value="" size="32"></td>
+    </tr>
+    <tr valign="baseline">
+      <td nowrap align="right">Ciudad:</td>
+      <td><input type="text" name="ciudad" value="" size="32"></td>
     </tr>
     <tr valign="baseline">
       <td nowrap align="right">&nbsp;</td>
-      <td><input type="submit" value="Actualizar registro"></td>
+      <td><input type="submit" value="Insertar registro"></td>
     </tr>
   </table>
-  <input type="hidden" name="MM_update" value="form1">
-  <input type="hidden" name="cedula" value="<?php echo $row_actualizar['cedula']; ?>">
+  <input type="hidden" name="MM_insert" value="form1">
 </form>
 <p>&nbsp;</p>
 </body>
 </html>
-<?php
-mysql_free_result($actualizar);
-?>
